@@ -1,51 +1,52 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
+    <input type="text" v-model="search" placeholder="Enter movie title"/>
     <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-router" target="_blank" rel="noopener">router</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-vuex" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-unit-jest" target="_blank" rel="noopener">unit-jest</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-typescript" target="_blank" rel="noopener">typescript</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
+      <div v-for="movie in movies" :key="movie.id">
+        <div class="titles">
+        <route-link :to="{name: 'Details', params: {id: movie.id,
+        title: movie.title,
+        release_date: movie.release_date,
+        popularity: movie.popularity,
+        overview: movie.overview,
+        vote_average: movie.vote_average,
+        vote_count: movie.vote_count,
+        adult: movie.adult
+          } }">
+          {{ movie.title }}
+        </route-link>
+        </div>
+      </div>
     </ul>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import gql from 'graphql-tag';
+
+const GET_MOVIES = gql` query {
+  movies(search: $search) {
+    id
+    title
+    genres
+  }
+}`;
+
 
 export default Vue.extend({
   name: 'HelloWorld',
-  props: {
-    msg: String,
-  },
+  data: function(){
+    return {
+      movies: [],
+      search: ''
+    }
+  }
 });
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
+<style scoped lang="css">
 h3 {
   margin: 40px 0 0;
 }
@@ -59,5 +60,8 @@ li {
 }
 a {
   color: #42b983;
+}
+.titles {
+  cursor:pointer
 }
 </style>

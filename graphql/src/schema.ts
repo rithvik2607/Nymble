@@ -12,7 +12,7 @@ const typeDefs = gql`
         vote_count: Int!
         adult: Boolean!
         genre_ids: [Int!]!
-        genre: Genre!
+        genre: Genre
     }
 
     type Genre {
