@@ -12,6 +12,7 @@ const typeDefs = gql`
         vote_count: Int!
         adult: Boolean!
         genre_ids: [Int!]!
+        genre: Genre!
     }
 
     type Genre {
@@ -24,9 +25,9 @@ const typeDefs = gql`
         genres: [Genre!]!
     }
 
-    # type Mutation {
-        # addRating(...): Movie!
-    # }
+    type Mutation {
+        addRating(movieId: Int!, rating: Int!): Movie!
+    }
 
 `
 
